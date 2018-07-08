@@ -1,0 +1,33 @@
+pipeline:
+  build:
+    image: docker
+    commands:
+      - docker build -t examples/microtrader-base .
+      # - docker tag examples/microtrader-base 685721039798.dkr.ecr.us-east-1.amazonaws.com/examples/microtrader-base:latest
+      # - docker tag examples/microtrader-base 685721039798.dkr.ecr.us-east-1.amazonaws.com/examples/microtrader-base:1.0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    when:
+      event: push
+      branch: master
+
+  publish:
+    image: plugins/ecr
+    repo: 685721039798.dkr.ecr.us-east-1.amazonaws.com/examples/microtrader-base
+    registry: 685721039798.dkr.ecr.us-east-1.amazonaws.com
+    secrets: [ ecr_access_key, ecr_secret_key ]
+    tags:
+      - latest
+      - 1.0
+    when:
+      event: push
+      branch: master
+
+  slack:
+    image: plugins/slack
+    webhook: https://hooks.slack.com/services/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
+    channel: ci-messages
+    username: drone
+    when:
+      status: [ success, failure ]
+
