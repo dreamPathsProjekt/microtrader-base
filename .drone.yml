@@ -14,7 +14,9 @@ pipeline:
     repo: ${ECR_REPO}
     registry: ${ECR_REGISTRY}
     secrets: [ ecr_access_key, ecr_secret_key ]
-    tags: ${TAGS}
+    tags:
+      - latest
+      - ${IMAGE_VERSION}
     when:
       event: push
       branch: master
@@ -28,18 +30,10 @@ pipeline:
       status: [ success, failure ]
 
 matrix:
-  IMAGE_NAME:
-    - examples/microtrader-base
-  TAGS:
-    - latest
-    - 1.0
-  ECR_REPO:
-    - 685721039798.dkr.ecr.us-east-1.amazonaws.com/examples/microtrader-base
-  ECR_REGISTRY:
-    - 685721039798.dkr.ecr.us-east-1.amazonaws.com
-  SLACK_WEBHOOK:
-    - https://hooks.slack.com/services/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
-  SLACK_CHANNEL:
-    - ci-messages
-  SLACK_USER:
-    - drone
+  IMAGE_NAME: examples/microtrader-base
+  IMAGE_VERSION: 1.0
+  ECR_REPO: 685721039798.dkr.ecr.us-east-1.amazonaws.com/examples/microtrader-base
+  ECR_REGISTRY: 685721039798.dkr.ecr.us-east-1.amazonaws.com
+  SLACK_WEBHOOK: https://hooks.slack.com/services/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
+  SLACK_CHANNEL: ci-messages
+  SLACK_USER: drone
