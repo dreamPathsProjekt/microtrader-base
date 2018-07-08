@@ -3,9 +3,6 @@ pipeline:
     image: docker
     commands:
       - docker build -t examples/microtrader-base .
-
-      # - docker tag examples/microtrader-base 685721039798.dkr.ecr.us-east-1.amazonaws.com/examples/microtrader-base:latest
-      # - docker tag examples/microtrader-base 685721039798.dkr.ecr.us-east-1.amazonaws.com/examples/microtrader-base:1.0
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     when:
